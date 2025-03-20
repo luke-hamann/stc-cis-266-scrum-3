@@ -185,8 +185,14 @@ class DB {
 
         $params = array(
             'firstName' => $customer->getFirstName(),
-            'lastName' => $
+            'lastName' => $customer->getLastName(),
+            'phone' => $customer->getPhone(),
+            'email' => $customer->getEmail(),
+            'address' => $customer->getAddress(),
+            'id' => $customer->getId()
         );
+
+        $this->query($sql, $params);
     }
 
     public function deleteCustomer($id) {
@@ -194,6 +200,10 @@ class DB {
             DELETE FROM Customers
             WHERE id = :id
         ';
+
+        $params = array('id' => $id);
+
+        $this->query($sql, $params);
     }
 
     public function insertSalesperson($salesperson) {
@@ -201,14 +211,39 @@ class DB {
             INSERT INTO Salespeople (firstName, lastName, hireDate, salary, commissionPercent)
             VALUES (:firstName, :lastName, :hireDate, :salary, :commissionPercent)
         ';
+
+        $params = array(
+            'firstName' => $salesperson->getFirstName(),
+            'lastName' => $salesperson->getLastName(),
+            'hireDate' => $salesperson->getHireDate(),
+            'salary' => $salesperson->getSalary(),
+            'commissionPercent' => $salesperson->getCommissionPercent()
+        );
+
+        return $this->insert($sql, $params);
     }
 
-    public function readSalesperson($salesperson) {
+    public function readSalesperson($id) {
         $sql = '
             SELECT id, firstName, lastName, hireDate, salary, commissionPercent
             FROM Salespeople
             WHERE id = :id;
         ';
+
+        $params = array('id' => $id);
+
+        $rows = $this->query($sql, $params);
+        if (count($rows) == 0) return null;
+        $row = $rows[0];
+
+        return new Salesperson(
+            $row['id'],
+            $row['firstName'],
+            $row['lastName'],
+            $row['hireDate'],
+            $row['salary'],
+            $row['commissionPercent']
+        );
     }
 
     public function updateSalesperson($salesperson) {
@@ -221,6 +256,17 @@ class DB {
                 commissionPercent = :commissionPercent
             WHERE id = :id
         ';
+
+        $params = array(
+            'firstName' => $salesperson->getFirstName(),
+            'lastName' => $salesperson->getLastName(),
+            'hireDate' => $salesperson->getHireDate(),
+            'salary' => $salesperson->getSalary(),
+            'commissionPercent' => $salesperson->getCommissionPercent(),
+            'id' => $salesperson->getId()
+        );
+
+        $this->query($sql, $params);
     }
 
     public function deleteSalesperson($id) {
@@ -228,6 +274,10 @@ class DB {
             DELETE FROM Salespeople
             WHERE id = :id
         ';
+
+        $params = array('id' => $id);
+
+        $this->query($sql, $params);
     }
 }
 ?>
