@@ -11,7 +11,7 @@ if ($_GET) {
         $array = array('message' => 'Salesperson not found.');
     } else {
         $array = array(
-            'message' => 'Salesperson found.',
+            'message' => 'Salesperson found!',
             'salesperson' => array(
                 'id' => $salesperson->getId(),
                 'firstName' => $salesperson->getFirstName(),

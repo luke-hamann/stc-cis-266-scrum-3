@@ -11,7 +11,7 @@ if ($_GET) {
         $array = array('message' => 'Car not found.');
     } else {
         $array = array(
-            'message' => 'Car found.',
+            'message' => 'Car found!',
             'car' => array(
                 'id' => $car->getId(),
                 'make' => $car->getMake(),

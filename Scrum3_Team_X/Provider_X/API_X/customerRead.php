@@ -11,7 +11,7 @@ if ($_GET) {
         $array = array('message' => 'Customer not found.');
     } else {
         $array = array(
-            'message' => 'Customer found.',
+            'message' => 'Customer found!',
             'customer' => array(
                 'id' => $customer->getId(),
                 'firstName' => $customer->getFirstName(),
