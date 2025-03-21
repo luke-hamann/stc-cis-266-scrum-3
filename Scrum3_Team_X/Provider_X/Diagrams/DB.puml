@@ -3,17 +3,17 @@ hide circle
 skinparam classAttributeIconSize 0
 
 class DB {
-    -db: PDO
-    + __construct(): DB
+    - db: PDO
     - prepare(string, array): PDOStatement
     - select(string, array): array
     - insert(string, array): string | false
     - update(string, array): boolean
     - delete(string, array): boolean
+    + __construct(): DB
     + insertCar(Car): string | false
     + readCar(int): Car | null
     + updateCar(Car): boolean
-    + deleteCar(Car): boolean
+    + deleteCar(int): boolean
     + insertCustomer(Customer): string | false
     + readCustomer(int): Customer | null
     + updateCustomer(Customer): boolean
