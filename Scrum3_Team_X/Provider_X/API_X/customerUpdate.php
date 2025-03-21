@@ -9,7 +9,7 @@ if ($_POST) {
     $email = $_POST['email'];
     $address = $_POST['address'];
 
-    $car = new Customer($id, $firstName, $lastName, $phone, $email, $address);
+    $customer = new Customer($id, $firstName, $lastName, $phone, $email, $address);
 
     $db = new DB();
 

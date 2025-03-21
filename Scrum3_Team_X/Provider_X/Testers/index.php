@@ -136,7 +136,7 @@ try {
     <form action="../API_X/customerCreate.php" method="post">
         <?= formInput('First name:', 'text', 'firstName', 'customerCreateFirstName') ?>
         <?= formInput('Last name:', 'text', 'lastName', 'customerCreateLastName') ?>
-        <?= formInput('Phone:', 'number', 'phone', 'customerCreatePhone') ?>
+        <?= formInput('Phone:', 'text', 'phone', 'customerCreatePhone') ?>
         <?= formInput('Email:', 'text', 'email', 'customerCreateEmail') ?>
         <?= formInput('Address:', 'text', 'address', 'customerCreateAddress') ?>
         <?= formButtons() ?>
@@ -151,7 +151,7 @@ try {
         <?= formInput('Id:', 'number', 'id', 'customerUpdateId') ?>
         <?= formInput('First name:', 'text', 'firstName', 'customerUpdateFirstName') ?>
         <?= formInput('Last name:', 'text', 'lastName', 'customerUpdateLastName') ?>
-        <?= formInput('Phone:', 'number', 'phone', 'customerUpdatePhone') ?>
+        <?= formInput('Phone:', 'text', 'phone', 'customerUpdatePhone') ?>
         <?= formInput('Email:', 'text', 'email', 'customerUpdateEmail') ?>
         <?= formInput('Address:', 'text', 'address', 'customerUpdateAddress') ?>
         <?= formButtons() ?>
@@ -184,9 +184,10 @@ try {
         <?= formInput('Hire date:', 'date', 'hireDate', 'salespersonUpdateHireDate') ?>
         <?= formInput('Salary:', 'number', 'salary', 'salespersonUpdateSalary') ?>
         <?= formInput('Commission percent:', 'number', 'commissionPercent', 'salespersonUpdateCommissionPercent') ?>
+        <?= formButtons() ?>
     </form>
     <h4>Delete salesperson</h4>
-    <form action="../API_X/salespersonDelete.php" method="get">
+    <form action="../API_X/salespersonDelete.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'salespersonDeleteId') ?>
         <?= formButtons() ?>
     </form>

@@ -7,13 +7,13 @@ if ($_POST) {
     $lastName = $_POST['lastName'];
     $hireDate = $_POST['hireDate'];
     $salary = $_POST['salary'];
-    $commissionPercent = $_POST['address'];
+    $commissionPercent = $_POST['commissionPercent'];
 
-    $car = new Salesperson($id, $firstName, $lastName, $hireDate, $salary, $address);
+    $salesperson = new Salesperson($id, $firstName, $lastName, $hireDate, $salary, $commissionPercent);
 
     $db = new DB();
 
-    if ($db->updateSalesperson($customer)) {
+    if ($db->updateSalesperson($salesperson)) {
         $array = array('message' => 'Salesperson updated successfully!');
     } else {
         $array = array('message' => 'Salesperson not found.');

@@ -4,8 +4,440 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home page</title>
+    <style>
+        :root {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+                'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            margin: 0 1rem 25vh;
+        }
+
+        main {
+            margin: 0 auto;
+            max-width: 35rem;
+        }
+
+        form div {
+            &:not(:first-of-type) {
+                margin-top: 1rem;
+            }
+
+            display: flex;
+            justify-content: space-between;
+            
+            input {
+                padding: 0;
+                border: 0;
+                outline: 1px solid black;
+            }
+
+            input, label {
+                display: block;
+                font-size: initial;
+                width: calc(50% - 0.5rem);
+            }
+        }
+    </style>
+    <script type="module">
+        document.body.addEventListener("submit", async (event) => {
+            if (event.target.dataset.ajaj) {
+                event.preventDefault();
+
+                const rules = event.target.dataset.ajaj
+                    .replaceAll(" ", "").replaceAll("\n", "")
+                    .split(";").filter(item => item != "").map(rule => rule.split(":"))
+                    .map(rule => ({ source: rule[0].split("."), selector: rule[1] }));
+
+                let url = event.target.getAttribute("action");
+                const method = event.target.getAttribute("method");
+
+                const formData = new FormData(event.target);
+                let body;
+                if (method == "get") {
+                    url += '?' + new URLSearchParams(formData).toString();
+                } else if (method == "post") {
+                    body = formData;
+                }
+
+                try {
+                    const options = body ? { method, body } : { method };
+                    const response = await fetch(url, options);
+                    const json = await response.json();
+
+                    for (const rule of rules) {
+                        let copy = JSON.parse(JSON.stringify(json));
+                        for (const key of rule.source) {
+                            copy = copy[key];
+                            if (!copy) break;
+                        }
+                        document.querySelector(rule.selector).innerText = copy ?? "";
+                    }
+                } catch (e) {
+                    console.log(e);
+
+                    document.querySelector(rules[0].selector).innerText = "An error occured.";
+                    for (const rule of rules.slice(1)) {
+                        document.querySelector(rule.selector).innerText = "";
+                    }
+                }
+            }
+        });
+    </script>
 </head>
 <body>
-    
+    <main>
+        <h1>Home page</h1>
+        <p>
+            <a href="../Provider_X/Testers/">Execute the testers</a>
+        </p>
+        <h2>Cars</h2>
+        <h3>Create car</h3>
+        <form action="../Provider_X/API_X/carCreate.php" method="post"
+            data-ajaj="
+                message: #carCreateResponseMessage;
+                id: #carCreateResponseId;
+            ">
+            <div>
+                <label for="carCreateMake">Make</label>
+                <input type="text" name="make" id="carCreateMake" />
+            </div>
+            <div>
+                <label for="carCreateModel">Model</label>
+                <input type="text" name="model" id="carCreateModel" />
+            </div>
+            <div>
+                <label for="carCreateYear">Year</label>
+                <input type="text" name="year" id="carCreateYear" />
+            </div>
+            <div>
+                <label for="carCreateColor">Color</label>
+                <input type="text" name="color" id="carCreateColor" />
+            </div>
+            <div>
+                <label for="carCreatePrice">Price</label>
+                <input type="number" name="price" id="carCreatePrice" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="carCreateResponseMessage"></span><br />
+            <b>Id</b>: <span id="carCreateResponseId"></span>
+        </p>
+        <h3>Read car</h3>
+        <form action="../Provider_X/API_X/carRead.php" method="get"
+            data-ajaj="
+                message: #carReadResponseMessage;
+                car.id: #carReadResponseId;
+                car.make: #carReadResponseMake;
+                car.model: #carReadResponseModel;
+                car.year: #carReadResponseYear;
+                car.color: #carReadResponseColor;
+                car.price: #carReadResponsePrice;
+            ">
+            <div>
+                <label for="carReadId">Id</label>
+                <input type="number" name="id" id="carReadId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="carReadResponseMessage"></span><br />
+            <b>Id</b>: <span id="carReadResponseId"></span><br />
+            <b>Make</b>: <span id="carReadResponseMake"></span><br />
+            <b>Model</b>: <span id="carReadResponseModel"></span><br />
+            <b>Year</b>: <span id="carReadResponseYear"></span><br />
+            <b>Color</b>: <span id="carReadResponseColor"></span><br />
+            <b>Price</b>: <span id="carReadResponsePrice"></span>
+        </p>
+        <h3>Update car</h3>
+        <form action="../Provider_X/API_X/carUpdate.php" method="post"
+            data-ajaj="message: #carUpdateResponseMessage;">
+            <div>
+                <label for="carUpdateId">Id</label>
+                <input type="number" name="id" id="carUpdateId" />
+            </div>
+            <div>
+                <label for="carUpdateMake">Make</label>
+                <input type="text" name="make" id="carUpdateMake" />
+            </div>
+            <div>
+                <label for="carUpdateModel">Model</label>
+                <input type="text" name="model" id="carUpdateModel" />
+            </div>
+            <div>
+                <label for="carUpdateYear">Year</label>
+                <input type="text" name="year" id="carUpdateYear" />
+            </div>
+            <div>
+                <label for="carUpdateColor">Color</label>
+                <input type="text" name="color" id="carUpdateColor" />
+            </div>
+            <div>
+                <label for="carUpdatePrice">Price</label>
+                <input type="number" name="price" id="carUpdatePrice" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="carUpdateResponseMessage"></span>
+        </p>
+        <h3>Delete car</h3>
+        <form action="../Provider_X/API_X/carDelete.php" method="post"
+            data-ajaj="message: #carDeleteResponseMessage">
+            <div>
+                <label for="carDeleteId">Id</label>
+                <input type="number" name="id" id="carDeleteId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="carDeleteResponseMessage"></span>
+        </p>
+        <h2>Customers</h2>
+        <h3>Create customer</h3>
+        <form action="../Provider_X/API_X/customerCreate.php" method="post"
+            data-ajaj="
+                message: #customerCreateResponseMessage;
+                id: #customerCreateResponseId;
+            ">
+            <div>
+                <label for="customerCreateFirstName">First name</label>
+                <input type="text" name="firstName" id="customerCreateFirstName" />
+            </div>
+            <div>
+                <label for="customerCreateLastName">Last name</label>
+                <input type="text" name="lastName" id="customerCreateLastName" />
+            </div>
+            <div>
+                <label for="customerCreatePhone">Phone</label>
+                <input type="text" name="phone" id="customerCreatePhone" />
+            </div>
+            <div>
+                <label for="customerCreateEmail">Email</label>
+                <input type="text" name="email" id="customerCreateEmail" />
+            </div>
+            <div>
+                <label for="customerCreateAddress">Address</label>
+                <input type="text" name="address" id="customerCreateAddress" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="customerCreateResponseMessage"></span><br />
+            <b>Id</b>: <span id="customerCreateResponseId"></span>
+        </p>
+        <h3>Read customer</h3>
+        <form action="../Provider_X/API_X/customerRead.php" method="get"
+            data-ajaj="
+                message: #customerReadResponseMessage;
+                customer.id: #customerReadResponseId;
+                customer.firstName: #customerReadResponseFirstName;
+                customer.lastName: #customerReadResponseLastName;
+                customer.phone: #customerReadResponsePhone;
+                customer.email: #customerReadResponseEmail;
+                customer.address: #customerReadResponseAddress;
+            ">
+            <div>
+                <label for="customerReadId">Id</label>
+                <input type="number" name="id" id="customerReadId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="customerReadResponseMessage"></span><br />
+            <b>Id</b>: <span id="customerReadResponseId"></span><br />
+            <b>First name</b>: <span id="customerReadResponseFirstName"></span><br />
+            <b>Last name</b>: <span id="customerReadResponseLastName"></span><br />
+            <b>Phone</b>: <span id="customerReadResponsePhone"></span><br />
+            <b>Email</b>: <span id="customerReadResponseEmail"></span><br />
+            <b>Address</b>: <span id="customerReadResponseAddress"></span><br />
+        </p>
+        <h3>Update customer</h3>
+        <form action="../Provider_X/API_X/customerUpdate.php" method="post"
+            data-ajaj="message: #customerUpdateResponseMessage;">
+            <div>
+                <label for="customerUpdateId">Id</label>
+                <input type="number" name="id" id="customerUpdateId" />
+            </div>
+            <div>
+                <label for="customerUpdateFirstName">First name</label>
+                <input type="text" name="firstName" id="customerUpdateFirstName" />
+            </div>
+            <div>
+                <label for="customerUpdateLastName">Last name</label>
+                <input type="text" name="lastName" id="customerUpdateLastName" />
+            </div>
+            <div>
+                <label for="customerUpdatePhone">Phone</label>
+                <input type="text" name="phone" id="customerUpdatePhone" />
+            </div>
+            <div>
+                <label for="customerUpdateEmail">Email</label>
+                <input type="text" name="email" id="customerUpdateEmail" />
+            </div>
+            <div>
+                <label for="customerUpdateAddress">Address</label>
+                <input type="text" name="address" id="customerUpdateAddress" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="customerUpdateResponseMessage"></span>
+        </p>
+        <h3>Delete customer</h3>
+        <form action="../Provider_X/API_X/customerDelete.php" method="post"
+            data-ajaj="message: #customerDeleteResponseMessage;">
+            <div>
+                <label for="customerDeleteId">Id</label>
+                <input type="number" name="id" id="customerDeleteId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="customerDeleteResponseMessage"></span>
+        </p>
+        <h2>Salespeople</h2>
+        <h3>Create salesperson</h3>
+        <form action="../Provider_X/API_X/salespersonCreate.php" method="post"
+            data-ajaj="
+                message: #salespersonCreateResponseMessage;
+                id: #salespersonCreateResponseId;
+            ">
+            <div>
+                <label for="salespersonCreateFirstName">First name</label>
+                <input type="text" name="firstName" id="salespersonCreateFirstName" />
+            </div>
+            <div>
+                <label for="salespersonCreateLastName">Last name</label>
+                <input type="text" name="lastName" id="salespersonCreateLastName" />
+            </div>
+            <div>
+                <label for="salespersonCreateHireDate">Hire date</label>
+                <input type="date" name="hireDate" id="salespersonCreateHireDate" />
+            </div>
+            <div>
+                <label for="salespersonCreateSalary">Salary</label>
+                <input type="number" name="salary" id="salespersonCreateSalary" />
+            </div>
+            <div>
+                <label for="salespersonCreateCommissionPercent">Commission percent</label>
+                <input type="number" name="commissionPercent" id="salespersonCreateCommissionPercent" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="salespersonCreateResponseMessage"></span><br />
+            <b>Id</b>: <span id="salespersonCreateResponseId"></span>
+        </p>
+        <h3>Read salesperson</h3>
+        <form action="../Provider_X/API_X/salespersonRead.php" method="get"
+            data-ajaj="
+                message: #salespersonReadResponseMessage;
+                salesperson.id: #salespersonReadResponseId;
+                salesperson.firstName: #salespersonReadResponseFirstName;
+                salesperson.lastName: #salespersonReadResponseLastName;
+                salesperson.hireDate: #salespersonReadResponseHireDate;
+                salesperson.salary: #salespersonReadResponseSalary;
+                salesperson.commissionPercent: #salespersonReadResponseCommissionPercent;
+            ">            
+            <div>
+                <label for="salespersonReadId">Id</label>
+                <input type="number" name="id" id="salespersonReadId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="salespersonReadResponseMessage"></span><br />
+            <b>Id</b>: <span id="salespersonReadResponseId"></span><br />
+            <b>First name</b>: <span id="salespersonReadResponseFirstName"></span><br />
+            <b>Last name</b>: <span id="salespersonReadResponseLastName"></span><br />
+            <b>Hire date</b>: <span id="salespersonReadResponseHireDate"></span><br />
+            <b>Salary</b>: <span id="salespersonReadResponseSalary"></span><br />
+            <b>Commission percent</b>: <span id="salespersonReadResponseCommissionPercent"></span><br />
+        </p>
+        <h3>Update salesperson</h3>
+        <form action="../Provider_X/API_X/salespersonUpdate.php" method="post"
+            data-ajaj="message: #salespersonUpdateResponseMessage;">
+            <div>
+                <label for="salespersonUpdateId">Id</label>
+                <input type="number" name="id" id="salespersonUpdateId" />
+            </div>
+            <div>
+                <label for="salespersonUpdateFirstName">First name</label>
+                <input type="text" name="firstName" id="salespersonUpdateFirstName" />
+            </div>
+            <div>
+                <label for="salespersonUpdateLastName">Last name</label>
+                <input type="text" name="lastName" id="salespersonUpdateLastName" />
+            </div>
+            <div>
+                <label for="salespersonUpdateHireDate">Hire date</label>
+                <input type="date" name="hireDate" id="salespersonUpdateHireDate" />
+            </div>
+            <div>
+                <label for="salespersonUpdateSalary">Salary</label>
+                <input type="number" name="salary" id="salespersonUpdateSalary" />
+            </div>
+            <div>
+                <label for="salespersonUpdateCommissionPercent">Commission percent</label>
+                <input type="number" name="commissionPercent" id="salespersonUpdateCommissionPercent" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="salespersonUpdateResponseMessage"></span>
+        </p>
+        <h3>Delete salesperson</h3>
+        <form action="../Provider_X/API_X/salespersonDelete.php" method="post"
+            data-ajaj="message: #salespersonDeleteResponseMessage">
+            <div>
+                <label for="salespersonDeleteId">Id</label>
+                <input type="number" name="id" id="salespersonDeleteId" />
+            </div>
+            <div>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Reset" />
+            </div>
+        </form>
+        <p>
+            <b>Message</b>: <span id="salespersonDeleteResponseMessage"></span>
+        </p>
+    </main>
 </body>
 </html>

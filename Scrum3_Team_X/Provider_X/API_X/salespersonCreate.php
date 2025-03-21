@@ -8,7 +8,7 @@ if ($_POST) {
     $salary = $_POST['salary'];
     $commissionPercent = $_POST['commissionPercent'];
 
-    $customer = new Salesperson(0, $firstName, $lastName, $hireDate, $salary, $commissionPercent);
+    $salesperson = new Salesperson(0, $firstName, $lastName, $hireDate, $salary, $commissionPercent);
 
     $db = new DB();
     $id = $db->insertSalesperson($salesperson);
