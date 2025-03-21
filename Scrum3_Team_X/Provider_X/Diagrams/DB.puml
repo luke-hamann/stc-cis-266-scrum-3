@@ -6,10 +6,10 @@ class DB {
     - db: PDO
     + __construct(): DB
     - prepare(string, array): PDOStatement
-    - select(string, array): array
+    - selectOne(string, int, array): array | null
     - insert(string, array): string | false
     - update(string, array): boolean
-    - delete(string, array): boolean
+    - delete(string, int): boolean
     + insertCar(Car): string | false
     + readCar(int): Car | null
     + updateCar(Car): boolean
