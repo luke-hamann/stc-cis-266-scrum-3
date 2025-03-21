@@ -111,7 +111,8 @@ class DB {
     }
 
     public function readCar($id) {
-        $row = $this->selectOne('Cars', $id, ['id', 'make', 'model', 'year', 'color', 'price']);
+        $row = $this->selectOne('Cars', $id,
+            ['id', 'make', 'model', 'year', 'color', 'price']);
         if ($row == null) return null;
 
         return new Car(
@@ -150,7 +151,8 @@ class DB {
     }
 
     public function readCustomer($id) {
-        $row = $this->selectOne('Customers', $id, ['id, firstName, lastName, phone, email, address']);
+        $row = $this->selectOne('Customers', $id,
+            ['id, firstName, lastName, phone, email, address']);
         if ($row == null) return null;
 
         return new Customer(
