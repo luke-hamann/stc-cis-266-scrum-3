@@ -13,14 +13,9 @@ class DB {
 
     public function __construct() {
         $dsn = 'mysql:host=' . self::DB_HOSTNAME . ';dbname=' . self::DB_DATABASE;
-        $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
+        $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
         try {
-            $this->db = new PDO(
-                $dsn,
-                self::DB_USERNAME,
-                self::DB_PASSWORD,
-                $options
-            );
+            $this->db = new PDO($dsn, self::DB_USERNAME,self::DB_PASSWORD, $options);
         } catch (PDOException $e) {
             die('Database exception: ' . $e->getMessage());
         }
@@ -38,20 +33,28 @@ class DB {
         }
     }
 
-    private function select($sql, $params) {
-        $statement = $this->prepare($sql, $params);
+    private function selectOne($tableName, $id, $columns) {
+        $columnList = implode(', ', $columns);
+        $sql = "SELECT $columnList FROM $tableName WHERE id = $id";
+
+        $statement = $this->prepare($sql, []);
         try {
             $statement->execute();
-            $result = $statement->fetchAll();
+            $row = $statement->fetch();
             $statement->closeCursor();
-            return $result;
+            return $row;
         } catch (PDOException $e) {
             die('Database error: ' . $e->getMessage());
         }
     }
 
-    private function insert($sql, $params) {
-        $statement = $this->prepare($sql, $params);
+    private function insert($tableName, $values) {
+        $columns = array_keys($values);
+        $columnList = implode(', ', $columns);
+        $params = implode(', ', preg_filter('/^/', ':', $columns));
+        $sql = "INSERT INTO $tableName ($columnList) VALUES ($params)";
+
+        $statement = $this->prepare($sql, $values);
         try {
             $statement->execute();
             $statement->closeCursor();
@@ -61,7 +64,32 @@ class DB {
         }
     }
 
-    private function update($sql, $params) {
+    private function update($tableName, $array) {
+        $sql = "UPDATE $tableName SET ";
+
+        $changes = [];
+        foreach ($array as $key => $value) {
+            if ($key == 'id') continue;
+            $changes[] = "$key = :$key";
+        }
+        $changes = implode(', ', $changes);
+
+        $sql = "UPDATE $tableName SET $changes WHERE id = :id";
+
+        $statement = $this->prepare($sql, $array);
+        try {
+            $statement->execute();
+            $statement->closeCursor();
+            return ($statement->rowCount() == 1);
+        } catch (PDOException $e) {
+            die('Database error: ' . $e->getMessage());
+        }
+    }
+
+    private function delete($tableName, $id) {
+        $sql = "DELETE FROM $tableName WHERE id = :id";
+        $params = ['id' => $id];
+
         $statement = $this->prepare($sql, $params);
         try {
             $statement->execute();
@@ -72,40 +100,19 @@ class DB {
         }
     }
 
-    private function delete($sql, $params) {
-        return $this->update($sql, $params);
-    }
-
     public function insertCar($car) {
-        $sql = '
-            INSERT INTO Cars (make, model, year, color, price)
-            VALUES (:make, :model, :year, :color, :price)
-        ';
-
-        $params = array(
+        return $this->insert('Cars', [
             'make' => $car->getMake(),
             'model' => $car->getModel(),
             'year' => $car->getYear(),
             'color' => $car->getColor(),
             'price' => $car->getPrice()
-        );
-
-       return $this->insert($sql, $params);
+        ]);
     }
 
     public function readCar($id) {
-        $sql = '
-            SELECT id, make, model, year, color, price
-            FROM Cars
-            WHERE id = :id
-        ';
-
-        $params = array('id' => $id);
-
-        $rows = $this->select($sql, $params);
-        if (count($rows) == 0) return null;
-
-        $row = $rows[0];
+        $row = $this->selectOne('Cars', $id, ['id', 'make', 'model', 'year', 'color', 'price']);
+        if ($row == null) return null;
 
         return new Car(
             $row['id'],
@@ -118,68 +125,33 @@ class DB {
     }
 
     public function updateCar($car) {
-        $sql = '
-            UPDATE Cars
-            SET make = :make,
-                model = :model,
-                year = :year,
-                color = :color,
-                price = :price
-            WHERE id = :id
-        ';
-
-        $params = array(
+        return $this->update('Cars', [
             'make' => $car->getMake(),
             'model' => $car->getModel(),
             'year' => $car->getYear(),
             'color' => $car->getColor(),
             'price' => $car->getPrice(),
             'id' => $car->getId()
-        );
-
-        return $this->update($sql, $params);
+        ]);
     }
 
     public function deleteCar($id) {
-        $sql = '
-            DELETE FROM Cars
-            WHERE id = :id
-        ';
-
-        $params = array('id' => $id);
-
-        return $this->delete($sql, $params);
+        return $this->delete('Cars', $id);
     }
 
     public function insertCustomer($customer) {
-        $sql = '
-            INSERT INTO Customers (firstName, lastName, phone, email, address)
-            VALUES (:firstName, :lastName, :phone, :email, :address)
-        ';
-
-        $params = array(
+        return $this->insert('Customers', [
             'firstName' => $customer->getFirstName(),
             'lastName' => $customer->getLastName(),
             'phone' => $customer->getPhone(),
             'email' => $customer->getEmail(),
             'address' => $customer->getAddress()
-        );
-
-        return $this->insert($sql, $params);
+        ]);
     }
 
     public function readCustomer($id) {
-        $sql = '
-            SELECT id, firstName, lastName, phone, email, address
-            FROM Customers
-            WHERE id = :id;
-        ';
-
-        $params = array('id' => $id);
-
-        $rows = $this->select($sql, $params);
-        if (count($rows) == 0) return null;
-        $row = $rows[0];
+        $row = $this->selectOne('Customers', $id, ['id, firstName, lastName, phone, email, address']);
+        if ($row == null) return null;
 
         return new Customer(
             $row['id'],
@@ -192,68 +164,34 @@ class DB {
     }
 
     public function updateCustomer($customer) {
-        $sql = '
-            UPDATE Customers
-            SET firstName = :firstName,
-                lastName = :lastName,
-                phone = :phone,
-                email = :email,
-                address = :address
-            WHERE id = :id
-        ';
-
-        $params = array(
+        return $this->update('Customers', [
+            'id' => $customer->getId(),
             'firstName' => $customer->getFirstName(),
             'lastName' => $customer->getLastName(),
             'phone' => $customer->getPhone(),
             'email' => $customer->getEmail(),
-            'address' => $customer->getAddress(),
-            'id' => $customer->getId()
-        );
-
-        return $this->update($sql, $params);
+            'address' => $customer->getAddress()
+        ]);
     }
 
     public function deleteCustomer($id) {
-        $sql = '
-            DELETE FROM Customers
-            WHERE id = :id
-        ';
-
-        $params = array('id' => $id);
-
-        return $this->delete($sql, $params);
+        return $this->delete('Customers', $id);
     }
 
     public function insertSalesperson($salesperson) {
-        $sql = '
-            INSERT INTO Salespeople (firstName, lastName, hireDate, salary, commissionPercent)
-            VALUES (:firstName, :lastName, :hireDate, :salary, :commissionPercent)
-        ';
-
-        $params = array(
+        return $this->insert('Salespeople', [
             'firstName' => $salesperson->getFirstName(),
             'lastName' => $salesperson->getLastName(),
             'hireDate' => $salesperson->getHireDate(),
             'salary' => $salesperson->getSalary(),
             'commissionPercent' => $salesperson->getCommissionPercent()
-        );
-
-        return $this->insert($sql, $params);
+        ]);
     }
 
     public function readSalesperson($id) {
-        $sql = '
-            SELECT id, firstName, lastName, hireDate, salary, commissionPercent
-            FROM Salespeople
-            WHERE id = :id;
-        ';
-
-        $params = array('id' => $id);
-
-        $rows = $this->select($sql, $params);
-        if (count($rows) == 0) return null;
-        $row = $rows[0];
+        $row = $this->selectOne('Salespeople', $id,
+            ['id', 'firstName', 'lastName', 'hireDate', 'salary', 'commissionPercent']);
+        if ($row == null) return null;
 
         return new Salesperson(
             $row['id'],
@@ -266,37 +204,18 @@ class DB {
     }
 
     public function updateSalesperson($salesperson) {
-        $sql = '
-            UPDATE Salespeople
-            SET firstName = :firstName,
-                lastName = :lastName,
-                hireDate = :hireDate,
-                salary = :salary,
-                commissionPercent = :commissionPercent
-            WHERE id = :id
-        ';
-
-        $params = array(
+        return $this->update('Salespeople', [
+            'id' => $salesperson->getId(),
             'firstName' => $salesperson->getFirstName(),
             'lastName' => $salesperson->getLastName(),
             'hireDate' => $salesperson->getHireDate(),
             'salary' => $salesperson->getSalary(),
-            'commissionPercent' => $salesperson->getCommissionPercent(),
-            'id' => $salesperson->getId()
-        );
-
-        return $this->update($sql, $params);
+            'commissionPercent' => $salesperson->getCommissionPercent()
+        ]);
     }
 
     public function deleteSalesperson($id) {
-        $sql = '
-            DELETE FROM Salespeople
-            WHERE id = :id
-        ';
-
-        $params = array('id' => $id);
-
-        return $this->delete($sql, $params);
+        return $this->delete('Salespeople', $id);
     }
 }
 ?>
