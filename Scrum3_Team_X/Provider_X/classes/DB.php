@@ -34,9 +34,10 @@ class DB {
         }
     }
 
-    private function query($sql, $params) {
+    private function select($sql, $params) {
         $statement = $this->prepare($sql, $params);
         try {
+            $
             $statement->execute();
             $result = $statement->fetchAll();
             $statement->closeCursor();
@@ -55,6 +56,21 @@ class DB {
         } catch (PDOException $e) {
             die('Database error: ' . $e->getMessage());
         }
+    }
+
+    private function update($sql, $params) {
+        $statement = $this->prepare($sql, $params);
+        try {
+            $statement->execute();
+            $statement->closeCursor();
+            return ($statement->rowCount() == 1);
+        } catch (PDOException $e) {
+            die('Database error: ' . $e->getMessage());
+        }
+    }
+
+    private function delete($sql, $params) {
+        return $this->update($sql, $params);
     }
 
     public function insertCar($car) {
@@ -83,7 +99,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $rows = $this->query($sql, $params);
+        $rows = $this->select($sql, $params);
         if (count($rows) == 0) return null;
 
         $row = $rows[0];
@@ -118,7 +134,7 @@ class DB {
             'id' => $car->getId()
         );
 
-        $this->query($sql, $params);
+        return $this->update($sql, $params);
     }
 
     public function deleteCar($id) {
@@ -129,7 +145,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $this->query($sql, $params);
+        return $this->delete($sql, $params);
     }
 
     public function insertCustomer($customer) {
@@ -158,7 +174,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $rows = $this->query($sql, $params);
+        $rows = $this->select($sql, $params);
         if (count($rows) == 0) return null;
         $row = $rows[0];
 
@@ -192,7 +208,7 @@ class DB {
             'id' => $customer->getId()
         );
 
-        $this->query($sql, $params);
+        return $this->update($sql, $params);
     }
 
     public function deleteCustomer($id) {
@@ -203,7 +219,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $this->query($sql, $params);
+        return $this->delete($sql, $params);
     }
 
     public function insertSalesperson($salesperson) {
@@ -232,7 +248,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $rows = $this->query($sql, $params);
+        $rows = $this->select($sql, $params);
         if (count($rows) == 0) return null;
         $row = $rows[0];
 
@@ -266,7 +282,7 @@ class DB {
             'id' => $salesperson->getId()
         );
 
-        $this->query($sql, $params);
+        return $this->update($sql, $params);
     }
 
     public function deleteSalesperson($id) {
@@ -277,7 +293,7 @@ class DB {
 
         $params = array('id' => $id);
 
-        $this->query($sql, $params);
+        return $this->delete($sql, $params);
     }
 }
 ?>
