@@ -1,0 +1,26 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Customer {
+    - id: int
+    - firstName: string
+    - lastName: string
+    - phone: string
+    - email: string
+    - address: string
+    + __construct(int, string, string, string, string, string): Customer
+    + getId(): int
+    + setId(int): void
+    + getFirstName(): string
+    + setFirstName(string): void
+    + getLastName(): string
+    + setLastName(string): void
+    + getPhone(): string
+    + setPhone(string): void
+    + getEmail(): string
+    + setEmail(string): void
+    + getAddress(): string
+    + setAddress(string): void
+}
+@enduml

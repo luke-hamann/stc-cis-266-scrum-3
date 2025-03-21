@@ -1,0 +1,26 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class DB {
+    -db: PDO
+    + __construct(): DB
+    - prepare(string, array): PDOStatement
+    - select(string, array): array
+    - insert(string, array): string | false
+    - update(string, array): boolean
+    - delete(string, array): boolean
+    + insertCar(Car): string | false
+    + readCar(int): Car | null
+    + updateCar(Car): boolean
+    + deleteCar(Car): boolean
+    + insertCustomer(Customer): string | false
+    + readCustomer(int): Customer | null
+    + updateCustomer(Customer): boolean
+    + deleteCustomer(int): boolean
+    + insertSalesperson(Salesperson): string | false
+    + readSalesperson(int): Salesperson | null
+    + updateSalesperson(Salesperson): boolean
+    + deleteSalesperson(int): boolean
+}
+@enduml

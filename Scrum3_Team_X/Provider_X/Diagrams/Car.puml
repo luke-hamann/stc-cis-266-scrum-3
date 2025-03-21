@@ -1,0 +1,22 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Car {
+    - id: int
+    - make: string
+    - model: string
+    - year: int
+    - color: string
+    - price: double
+    + __construct(int, string, string, int, string, double): Car
+    + getId(): int
+    + setId(int): void
+    + getMake(): string
+    + setMake(string): void
+    + getModel(): string
+    + setModel(string): void
+    + getYear(): int
+    + setYear(int): void
+}
+@enduml
