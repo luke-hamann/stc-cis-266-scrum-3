@@ -1,4 +1,8 @@
 <?php
+require_once 'Car.php';
+require_once 'Customer.php';
+require_once 'Salesperson.php';
+
 class DB {
     const DB_HOSTNAME = 'localhost';
     const DB_USERNAME = 'root';
@@ -37,7 +41,6 @@ class DB {
     private function select($sql, $params) {
         $statement = $this->prepare($sql, $params);
         try {
-            $
             $statement->execute();
             $result = $statement->fetchAll();
             $statement->closeCursor();
