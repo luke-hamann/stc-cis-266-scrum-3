@@ -9,14 +9,18 @@ class Car {
     - year: int
     - color: string
     - price: double
-    + __construct(int, string, string, int, string, double): Car
+    + __construct(id: int, make: string, model: string, year: int, color: string, price: double): void
     + getId(): int
-    + setId(int): void
+    + setId(id: int): void
     + getMake(): string
-    + setMake(string): void
+    + setMake(make: string): void
     + getModel(): string
-    + setModel(string): void
+    + setModel(model: string): void
     + getYear(): int
-    + setYear(int): void
+    + setYear(year: int): void
+    + getColor(): string
+    + setColor(color: string): void
+    + getPrice(): double
+    + setPrice(price: double): void
 }
 @enduml

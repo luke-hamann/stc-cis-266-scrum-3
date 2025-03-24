@@ -9,18 +9,18 @@ class Salesperson {
     - hireDate: string
     - salary: double
     - commissionPercent: double
-    + __construct(int, string, string, string, double, double): Salesperson
+    + __construct(id: int, firstName: string, lastName: string, hireDate: string, salary: double, commissionPercent: double): void
     + getId(): int
-    + setId(int): void
+    + setId(id: int): void
     + getFirstName(): string
-    + setFirstName(string): void
+    + setFirstName(firstName: string): void
     + getLastName(): string
-    + setLastName(string): void
+    + setLastName(lastName: string): void
     + getHireDate(): string
-    + setHireDate(string): void
+    + setHireDate(hireDate: string): void
     + getSalary(): double
-    + setSalary(double): void
+    + setSalary(salary: double): void
     + getCommissionPercent(): double
-    + setCommissionPercent(double): void
+    + setCommissionPercent(commissionPercent: double): void
 }
 @enduml

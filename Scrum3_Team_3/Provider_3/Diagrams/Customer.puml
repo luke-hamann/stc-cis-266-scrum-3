@@ -9,18 +9,18 @@ class Customer {
     - phone: string
     - email: string
     - address: string
-    + __construct(int, string, string, string, string, string): Customer
+    + __construct(id: int, firstName: string, lastName: string, phone: string, email: string, address: string): void
     + getId(): int
-    + setId(int): void
+    + setId(id: int): void
     + getFirstName(): string
-    + setFirstName(string): void
+    + setFirstName(firstName: string): void
     + getLastName(): string
-    + setLastName(string): void
+    + setLastName(lastName: string): void
     + getPhone(): string
-    + setPhone(string): void
+    + setPhone(phone: string): void
     + getEmail(): string
-    + setEmail(string): void
+    + setEmail(email: string): void
     + getAddress(): string
-    + setAddress(string): void
+    + setAddress(address: string): void
 }
 @enduml

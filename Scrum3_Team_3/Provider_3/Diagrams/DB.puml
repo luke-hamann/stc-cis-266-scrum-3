@@ -4,23 +4,23 @@ skinparam classAttributeIconSize 0
 
 class DB {
     - db: PDO
-    + __construct(): DB
-    - prepare(string, array): PDOStatement
-    - selectOne(string, int, array): array | null
-    - insert(string, array): string | false
-    - update(string, array): boolean
-    - delete(string, int): boolean
-    + insertCar(Car): string | false
-    + readCar(int): Car | null
-    + updateCar(Car): boolean
-    + deleteCar(int): boolean
-    + insertCustomer(Customer): string | false
-    + readCustomer(int): Customer | null
-    + updateCustomer(Customer): boolean
-    + deleteCustomer(int): boolean
-    + insertSalesperson(Salesperson): string | false
-    + readSalesperson(int): Salesperson | null
-    + updateSalesperson(Salesperson): boolean
-    + deleteSalesperson(int): boolean
+    + __construct(): void
+    - prepare(sql: string, params: array): PDOStatement | false
+    - select(tableName: string, id: int, columns: array): array | null
+    - insert(tableName: string, values: array): string | false
+    - update(tableName: string, values: array): boolean
+    - delete(tableName: string, id: int): boolean
+    + insertCar(car: Car): string | false
+    + readCar(id: int): Car | null
+    + updateCar(car: Car): boolean
+    + deleteCar(id: int): boolean
+    + insertCustomer(customer: Customer): string | false
+    + readCustomer(id: int): Customer | null
+    + updateCustomer(customer: Customer): boolean
+    + deleteCustomer(id: int): boolean
+    + insertSalesperson(salesperson: Salesperson): string | false
+    + readSalesperson(id: int): Salesperson | null
+    + updateSalesperson(salesperson: Salesperson): boolean
+    + deleteSalesperson(id: int): boolean
 }
 @enduml
