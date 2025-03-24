@@ -30,7 +30,7 @@ try {
 
 <?php function table($headers, $columns, $records) { ?>
     <?php if (count($records) == 0) : ?>
-        <p><i>No records found</i></p>
+        <p><i>No records found.</i></p>
     <?php else : ?>
         <table>
             <thead>
@@ -102,21 +102,21 @@ try {
     ) ?>
     <h2>API Functions</h2>
     <h3>Cars CRUD</h3>
-    <h4>Create car</h4>
+    <h4>Create Car</h4>
     <form action="../API_3/carCreate.php" method="post">
         <?= formInput('Make:', 'text', 'make', 'carCreateMake') ?>
         <?= formInput('Model:', 'text', 'model', 'carCreateModel') ?>
         <?= formInput('Year:', 'number', 'year', 'carCreateYear') ?>
-        <?= formInput('Color:', 'text', 'color', 'carCreateId') ?>
+        <?= formInput('Color:', 'text', 'color', 'carCreateColor') ?>
         <?= formInput('Price:', 'number', 'price', 'carCreatePrice') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Read car</h4>
+    <h4>Read Car</h4>
     <form action="../API_3/carRead.php" method="get">
         <?= formInput('Id:', 'number', 'id', 'carReadId') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Update car</h4>
+    <h4>Update Car</h4>
     <form action="../API_3/carUpdate.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'carUpdateId') ?>
         <?= formInput('Make:', 'text', 'make', 'carUpdateMake') ?>
@@ -126,43 +126,43 @@ try {
         <?= formInput('Price:', 'number', 'price', 'carUpdatePrice') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Delete car</h4>
+    <h4>Delete Car</h4>
     <form action="../API_3/carDelete.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'carDeleteId') ?>
         <?= formButtons() ?>
     </form>
     <h3>Customers CRUD</h3>
-    <h4>Create customer</h4>
+    <h4>Create Customer</h4>
     <form action="../API_3/customerCreate.php" method="post">
         <?= formInput('First name:', 'text', 'firstName', 'customerCreateFirstName') ?>
         <?= formInput('Last name:', 'text', 'lastName', 'customerCreateLastName') ?>
         <?= formInput('Phone:', 'text', 'phone', 'customerCreatePhone') ?>
-        <?= formInput('Email:', 'text', 'email', 'customerCreateEmail') ?>
+        <?= formInput('Email:', 'email', 'email', 'customerCreateEmail') ?>
         <?= formInput('Address:', 'text', 'address', 'customerCreateAddress') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Read customer</h4>
+    <h4>Read Customer</h4>
     <form action="../API_3/customerRead.php" method="get">
         <?= formInput('Id:', 'number', 'id', 'customerReadId') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Update customer</h4>
+    <h4>Update Customer</h4>
     <form action="../API_3/customerUpdate.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'customerUpdateId') ?>
         <?= formInput('First name:', 'text', 'firstName', 'customerUpdateFirstName') ?>
         <?= formInput('Last name:', 'text', 'lastName', 'customerUpdateLastName') ?>
         <?= formInput('Phone:', 'text', 'phone', 'customerUpdatePhone') ?>
-        <?= formInput('Email:', 'text', 'email', 'customerUpdateEmail') ?>
+        <?= formInput('Email:', 'email', 'email', 'customerUpdateEmail') ?>
         <?= formInput('Address:', 'text', 'address', 'customerUpdateAddress') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Delete customer</h4>
+    <h4>Delete Customer</h4>
     <form action="../API_3/customerDelete.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'customerDeleteId') ?>
         <?= formButtons() ?>
     </form>
     <h3>Salespeople CRUD</h3>
-    <h4>Create salesperson</h4>
+    <h4>Create Salesperson</h4>
     <form action="../API_3/salespersonCreate.php" method="post">
         <?= formInput('First name:', 'text', 'firstName', 'salespersonCreateFirstName') ?>
         <?= formInput('Last name:', 'text', 'lastName', 'salespersonCreateLastName') ?>
@@ -171,12 +171,12 @@ try {
         <?= formInput('Commission percent:', 'number', 'commissionPercent', 'salespersonCreateCommissionPercent') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Read salesperson</h4>
+    <h4>Read Salesperson</h4>
     <form action="../API_3/salespersonRead.php" method="get">
         <?= formInput('Id:', 'number', 'id', 'salespersonReadId') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Update salesperson</h4>
+    <h4>Update Salesperson</h4>
     <form action="../API_3/salespersonUpdate.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'salespersonUpdateId') ?>
         <?= formInput('First name:', 'text', 'firstName', 'salespersonUpdateFirstName') ?>
@@ -186,7 +186,7 @@ try {
         <?= formInput('Commission percent:', 'number', 'commissionPercent', 'salespersonUpdateCommissionPercent') ?>
         <?= formButtons() ?>
     </form>
-    <h4>Delete salesperson</h4>
+    <h4>Delete Salesperson</h4>
     <form action="../API_3/salespersonDelete.php" method="post">
         <?= formInput('Id:', 'number', 'id', 'salespersonDeleteId') ?>
         <?= formButtons() ?>
