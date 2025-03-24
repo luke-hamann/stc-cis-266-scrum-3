@@ -8,19 +8,19 @@ if ($_GET) {
     $salesperson = $db->readSalesperson($id);
 
     if ($salesperson == null) {
-        $array = array('message' => 'Salesperson not found.');
+        $array = ['message' => 'Salesperson not found.'];
     } else {
-        $array = array(
+        $array = [
             'message' => 'Salesperson found!',
-            'salesperson' => array(
+            'salesperson' => [
                 'id' => $salesperson->getId(),
                 'firstName' => $salesperson->getFirstName(),
                 'lastName' => $salesperson->getLastName(),
                 'hireDate' => $salesperson->getHireDate(),
                 'salary' => $salesperson->getSalary(),
                 'commissionPercent' => $salesperson->getCommissionPercent()
-            )
-        );
+            ]
+        ];
     }
 
     header('Content-Type: application/json');

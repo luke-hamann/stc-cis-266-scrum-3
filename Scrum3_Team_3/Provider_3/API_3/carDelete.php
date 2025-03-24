@@ -7,9 +7,9 @@ if ($_POST) {
     $db = new DB();
 
     if ($db->deleteCar($id)) {
-        $array = array('message' => 'Car deleted successfully!');
+        $array = ['message' => 'Car deleted successfully!'];
     } else {
-        $array = array('message' => 'Car not found.');
+        $array = ['message' => 'Car not found.'];
     }
 
     header('Content-Type: application/json');

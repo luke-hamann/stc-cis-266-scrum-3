@@ -8,19 +8,19 @@ if ($_GET) {
     $customer = $db->readCustomer($id);
 
     if ($customer == null) {
-        $array = array('message' => 'Customer not found.');
+        $array = ['message' => 'Customer not found.'];
     } else {
-        $array = array(
+        $array = [
             'message' => 'Customer found!',
-            'customer' => array(
+            'customer' => [
                 'id' => $customer->getId(),
                 'firstName' => $customer->getFirstName(),
                 'lastName' => $customer->getLastName(),
                 'phone' => $customer->getPhone(),
                 'email' => $customer->getEmail(),
                 'address' => $customer->getAddress()
-            )
-        );
+            ]
+        ];
     }
 
     header('Content-Type: application/json');

@@ -15,7 +15,7 @@ class DB {
         $dsn = 'mysql:host=' . self::DB_HOSTNAME . ';dbname=' . self::DB_DATABASE;
         $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
         try {
-            $this->db = new PDO($dsn, self::DB_USERNAME,self::DB_PASSWORD, $options);
+            $this->db = new PDO($dsn, self::DB_USERNAME, self::DB_PASSWORD, $options);
         } catch (PDOException $e) {
             die('Database exception: ' . $e->getMessage());
         }
@@ -33,11 +33,11 @@ class DB {
         }
     }
 
-    private function selectOne($tableName, $id, $columns) {
+    private function select($tableName, $id, $columns) {
         $columnList = implode(', ', $columns);
-        $sql = "SELECT $columnList FROM $tableName WHERE id = $id";
+        $sql = "SELECT $columnList FROM $tableName WHERE id = :id";
 
-        $statement = $this->prepare($sql, []);
+        $statement = $this->prepare($sql, ['id' => $id]);
         try {
             $statement->execute();
             $row = $statement->fetch();
@@ -64,19 +64,18 @@ class DB {
         }
     }
 
-    private function update($tableName, $array) {
-        $sql = "UPDATE $tableName SET ";
-
+    private function update($tableName, $values) {
+        $columns = array_keys($values);
         $changes = [];
-        foreach ($array as $key => $value) {
-            if ($key == 'id') continue;
-            $changes[] = "$key = :$key";
+        foreach ($columns as $column) {
+            if ($column == 'id') continue;
+            $changes[] = "$column = :$column";
         }
         $changes = implode(', ', $changes);
 
         $sql = "UPDATE $tableName SET $changes WHERE id = :id";
 
-        $statement = $this->prepare($sql, $array);
+        $statement = $this->prepare($sql, $values);
         try {
             $statement->execute();
             $statement->closeCursor();
@@ -88,9 +87,7 @@ class DB {
 
     private function delete($tableName, $id) {
         $sql = "DELETE FROM $tableName WHERE id = :id";
-        $params = ['id' => $id];
-
-        $statement = $this->prepare($sql, $params);
+        $statement = $this->prepare($sql, ['id' => $id]);
         try {
             $statement->execute();
             $statement->closeCursor();
@@ -111,7 +108,7 @@ class DB {
     }
 
     public function readCar($id) {
-        $row = $this->selectOne('Cars', $id,
+        $row = $this->select('Cars', $id,
             ['id', 'make', 'model', 'year', 'color', 'price']);
         if ($row == null) return null;
 
@@ -127,12 +124,12 @@ class DB {
 
     public function updateCar($car) {
         return $this->update('Cars', [
+            'id' => $car->getId(),
             'make' => $car->getMake(),
             'model' => $car->getModel(),
             'year' => $car->getYear(),
             'color' => $car->getColor(),
-            'price' => $car->getPrice(),
-            'id' => $car->getId()
+            'price' => $car->getPrice()
         ]);
     }
 
@@ -151,7 +148,7 @@ class DB {
     }
 
     public function readCustomer($id) {
-        $row = $this->selectOne('Customers', $id,
+        $row = $this->select('Customers', $id,
             ['id, firstName, lastName, phone, email, address']);
         if ($row == null) return null;
 
@@ -191,7 +188,7 @@ class DB {
     }
 
     public function readSalesperson($id) {
-        $row = $this->selectOne('Salespeople', $id,
+        $row = $this->select('Salespeople', $id,
             ['id', 'firstName', 'lastName', 'hireDate', 'salary', 'commissionPercent']);
         if ($row == null) return null;
 

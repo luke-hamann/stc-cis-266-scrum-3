@@ -14,14 +14,12 @@ if ($_POST) {
     $id = $db->insertCar($car);
 
     if ($id) {
-        $array = array(
+        $array = [
             'message' => 'Car created successfully!',
             'id' => $id
-        );
+        ];
     } else {
-        $array = array(
-            'message' => 'Car could not be created.'
-        );
+        $array = ['message' => 'Car could not be created.'];
     }
 
     header('Content-Type: application/json');

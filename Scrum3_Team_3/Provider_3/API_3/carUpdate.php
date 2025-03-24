@@ -14,9 +14,9 @@ if ($_POST) {
     $db = new DB();
 
     if ($db->updateCar($car)) {
-        $array = array('message' => 'Car updated successfully!');
+        $array = ['message' => 'Car updated successfully!'];
     } else {
-        $array = array('message' => 'Car not found.');
+        $array = ['message' => 'Car not found.'];
     }
 
     header('Content-Type: application/json');

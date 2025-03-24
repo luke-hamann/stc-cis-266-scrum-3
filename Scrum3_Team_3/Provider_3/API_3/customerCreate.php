@@ -14,14 +14,12 @@ if ($_POST) {
     $id = $db->insertCustomer($customer);
 
     if ($id) {
-        $array = array(
+        $array = [
             'message' => 'Customer created successfully!',
             'id' => $id
-        );
+        ];
     } else {
-        $array = array(
-            'message' => 'Customer not created.'
-        );
+        $array = ['message' => 'Customer not created.'];
     }
 
     header('Content-Type: application/json');

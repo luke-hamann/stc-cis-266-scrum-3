@@ -7,9 +7,9 @@ if ($_POST) {
     $db = new DB();
 
     if ($db->deleteCustomer($id)) {
-        $array = array('message' => 'Customer deleted successfully!');
+        $array = ['message' => 'Customer deleted successfully!'];
     } else {
-        $array = array('message' => 'Customer not found.');
+        $array = ['message' => 'Customer not found.'];
     }
 
     header('Content-Type: application/json');

@@ -6,7 +6,7 @@ $DB_DATABASE = 'carDealership';
 
 try {
     $dsn = "mysql:host=$DB_HOSTNAME;dbname=$DB_DATABASE";
-    $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
+    $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
     $db = new PDO($dsn, $DB_USERNAME, $DB_PASSWORD, $options);
 
     $sqls = [

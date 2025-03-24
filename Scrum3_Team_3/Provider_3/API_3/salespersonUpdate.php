@@ -14,9 +14,9 @@ if ($_POST) {
     $db = new DB();
 
     if ($db->updateSalesperson($salesperson)) {
-        $array = array('message' => 'Salesperson updated successfully!');
+        $array = ['message' => 'Salesperson updated successfully!'];
     } else {
-        $array = array('message' => 'Salesperson not found.');
+        $array = ['message' => 'Salesperson not found.'];
     }
 
     header('Content-Type: application/json');

@@ -1,3 +1,5 @@
+START TRANSACTION;
+
 DROP DATABASE IF EXISTS carDealership;
 CREATE DATABASE carDealership;
 USE carDealership;
@@ -47,7 +49,7 @@ INSERT INTO Customers (firstName, lastName, phone, email, address)
 VALUES
     ('Joe', 'Cool', '123-456-6789', 'joe.cool@example.com', '123 Cool Pkwy'),
     ('John', 'Smith', '748-843-0158', 'john.smith@example.gov', '200 Nice Town'),
-    ('Mary', 'Sue', '062-239-9175', 'msue@hi@example.org', '960 Another Rd'),
+    ('Mary', 'Sue', '062-239-9175', 'msue@hi.example.org', '960 Another Rd'),
     ('Ann', 'Marie', '165-340-1076', 'ann.marie@example.net', '329 Orange St'),
     ('Mark', 'Davey', '347-239-3744', 'mark.davey@wow.example.org', '4855 Computer Ct'),
     ('Sam', 'Donald', '758-608-2384', 'sam.donald@example.edu', '558 Main St'),
@@ -62,3 +64,5 @@ VALUES
     ('Levi', 'Freddy', '2023-11-24', 37597, 6),
     ('George', 'McSwift', '2005-06-18', 10983, 5),
     ('David', 'Teller', '2016-09-18', 68198, 9);
+
+COMMIT;

@@ -8,19 +8,19 @@ if ($_GET) {
     $car = $db->readCar($id);
 
     if ($car == null) {
-        $array = array('message' => 'Car not found.');
+        $array = ['message' => 'Car not found.'];
     } else {
-        $array = array(
+        $array = [
             'message' => 'Car found!',
-            'car' => array(
+            'car' => [
                 'id' => $car->getId(),
                 'make' => $car->getMake(),
                 'model' => $car->getModel(),
                 'year' => $car->getYear(),
                 'color' => $car->getColor(),
                 'price' => $car->getPrice()
-            )
-        );
+            ]
+        ];
     }
 
     header('Content-Type: application/json');
