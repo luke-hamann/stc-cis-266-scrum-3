@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
     <style>
         :root {
             font-family: system-ui, -apple-system, BlinkMacSystemFont,
@@ -21,12 +21,12 @@
         }
 
         form div {
+            display: flex;
+            justify-content: space-between;
+
             &:not(:first-of-type) {
                 margin-top: 1rem;
             }
-
-            display: flex;
-            justify-content: space-between;
             
             input {
                 padding: 0;
@@ -47,8 +47,8 @@
                 event.preventDefault();
 
                 const rules = event.target.dataset.ajaj
-                    .replaceAll(" ", "").replaceAll("\n", "")
-                    .split(";").filter(item => item != "").map(rule => rule.split(":"))
+                    .replace(/\s/g, "").split(";")
+                    .filter(rule => rule != "").map(rule => rule.split(":"))
                     .map(rule => ({ source: rule[0].split("."), selector: rule[1] }));
 
                 let url = event.target.getAttribute("action");
@@ -78,7 +78,7 @@
                 } catch (e) {
                     console.log(e);
 
-                    document.querySelector(rules[0].selector).innerText = "An error occured.";
+                    document.querySelector(rules[0].selector).innerText = "An error occurred.";
                     for (const rule of rules.slice(1)) {
                         document.querySelector(rule.selector).innerText = "";
                     }
@@ -89,12 +89,12 @@
 </head>
 <body>
     <main>
-        <h1>Home page</h1>
+        <h1>Home Page</h1>
         <p>
-            <a href="../Provider_3/Testers/">Execute the testers</a>
+            <a href="../Provider_3/Testers/">Execute the Testers</a>
         </p>
         <h2>Cars</h2>
-        <h3>Create car</h3>
+        <h3>Create Car</h3>
         <form action="../Provider_3/API_3/carCreate.php" method="post"
             data-ajaj="
                 message: #carCreateResponseMessage;
@@ -110,7 +110,7 @@
             </div>
             <div>
                 <label for="carCreateYear">Year</label>
-                <input type="text" name="year" id="carCreateYear" />
+                <input type="number" name="year" id="carCreateYear" />
             </div>
             <div>
                 <label for="carCreateColor">Color</label>
@@ -129,7 +129,7 @@
             <b>Message</b>: <span id="carCreateResponseMessage"></span><br />
             <b>Id</b>: <span id="carCreateResponseId"></span>
         </p>
-        <h3>Read car</h3>
+        <h3>Read Car</h3>
         <form action="../Provider_3/API_3/carRead.php" method="get"
             data-ajaj="
                 message: #carReadResponseMessage;
@@ -158,7 +158,7 @@
             <b>Color</b>: <span id="carReadResponseColor"></span><br />
             <b>Price</b>: <span id="carReadResponsePrice"></span>
         </p>
-        <h3>Update car</h3>
+        <h3>Update Car</h3>
         <form action="../Provider_3/API_3/carUpdate.php" method="post"
             data-ajaj="message: #carUpdateResponseMessage;">
             <div>
@@ -175,7 +175,7 @@
             </div>
             <div>
                 <label for="carUpdateYear">Year</label>
-                <input type="text" name="year" id="carUpdateYear" />
+                <input type="number" name="year" id="carUpdateYear" />
             </div>
             <div>
                 <label for="carUpdateColor">Color</label>
@@ -193,9 +193,9 @@
         <p>
             <b>Message</b>: <span id="carUpdateResponseMessage"></span>
         </p>
-        <h3>Delete car</h3>
+        <h3>Delete Car</h3>
         <form action="../Provider_3/API_3/carDelete.php" method="post"
-            data-ajaj="message: #carDeleteResponseMessage">
+            data-ajaj="message: #carDeleteResponseMessage;">
             <div>
                 <label for="carDeleteId">Id</label>
                 <input type="number" name="id" id="carDeleteId" />
@@ -209,7 +209,7 @@
             <b>Message</b>: <span id="carDeleteResponseMessage"></span>
         </p>
         <h2>Customers</h2>
-        <h3>Create customer</h3>
+        <h3>Create Customer</h3>
         <form action="../Provider_3/API_3/customerCreate.php" method="post"
             data-ajaj="
                 message: #customerCreateResponseMessage;
@@ -244,7 +244,7 @@
             <b>Message</b>: <span id="customerCreateResponseMessage"></span><br />
             <b>Id</b>: <span id="customerCreateResponseId"></span>
         </p>
-        <h3>Read customer</h3>
+        <h3>Read Customer</h3>
         <form action="../Provider_3/API_3/customerRead.php" method="get"
             data-ajaj="
                 message: #customerReadResponseMessage;
@@ -271,9 +271,9 @@
             <b>Last name</b>: <span id="customerReadResponseLastName"></span><br />
             <b>Phone</b>: <span id="customerReadResponsePhone"></span><br />
             <b>Email</b>: <span id="customerReadResponseEmail"></span><br />
-            <b>Address</b>: <span id="customerReadResponseAddress"></span><br />
+            <b>Address</b>: <span id="customerReadResponseAddress"></span>
         </p>
-        <h3>Update customer</h3>
+        <h3>Update Customer</h3>
         <form action="../Provider_3/API_3/customerUpdate.php" method="post"
             data-ajaj="message: #customerUpdateResponseMessage;">
             <div>
@@ -308,7 +308,7 @@
         <p>
             <b>Message</b>: <span id="customerUpdateResponseMessage"></span>
         </p>
-        <h3>Delete customer</h3>
+        <h3>Delete Customer</h3>
         <form action="../Provider_3/API_3/customerDelete.php" method="post"
             data-ajaj="message: #customerDeleteResponseMessage;">
             <div>
@@ -324,7 +324,7 @@
             <b>Message</b>: <span id="customerDeleteResponseMessage"></span>
         </p>
         <h2>Salespeople</h2>
-        <h3>Create salesperson</h3>
+        <h3>Create Salesperson</h3>
         <form action="../Provider_3/API_3/salespersonCreate.php" method="post"
             data-ajaj="
                 message: #salespersonCreateResponseMessage;
@@ -359,7 +359,7 @@
             <b>Message</b>: <span id="salespersonCreateResponseMessage"></span><br />
             <b>Id</b>: <span id="salespersonCreateResponseId"></span>
         </p>
-        <h3>Read salesperson</h3>
+        <h3>Read Salesperson</h3>
         <form action="../Provider_3/API_3/salespersonRead.php" method="get"
             data-ajaj="
                 message: #salespersonReadResponseMessage;
@@ -386,9 +386,9 @@
             <b>Last name</b>: <span id="salespersonReadResponseLastName"></span><br />
             <b>Hire date</b>: <span id="salespersonReadResponseHireDate"></span><br />
             <b>Salary</b>: <span id="salespersonReadResponseSalary"></span><br />
-            <b>Commission percent</b>: <span id="salespersonReadResponseCommissionPercent"></span><br />
+            <b>Commission percent</b>: <span id="salespersonReadResponseCommissionPercent"></span>
         </p>
-        <h3>Update salesperson</h3>
+        <h3>Update Salesperson</h3>
         <form action="../Provider_3/API_3/salespersonUpdate.php" method="post"
             data-ajaj="message: #salespersonUpdateResponseMessage;">
             <div>
@@ -423,9 +423,9 @@
         <p>
             <b>Message</b>: <span id="salespersonUpdateResponseMessage"></span>
         </p>
-        <h3>Delete salesperson</h3>
+        <h3>Delete Salesperson</h3>
         <form action="../Provider_3/API_3/salespersonDelete.php" method="post"
-            data-ajaj="message: #salespersonDeleteResponseMessage">
+            data-ajaj="message: #salespersonDeleteResponseMessage;">
             <div>
                 <label for="salespersonDeleteId">Id</label>
                 <input type="number" name="id" id="salespersonDeleteId" />
